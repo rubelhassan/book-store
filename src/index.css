@@ -61,12 +61,14 @@ html body a:hover {
 
 /* navigation */
 nav {
-  background-color: var(--primary);
   height: 60px;
   width: 100%;
   display: flex;
+  position: fixed;
   justify-content: center;
   color: var(--primary-accent);
+  background-color: var(--primary);
+  z-index: 100;
 }
 
 .logo {
@@ -123,11 +125,12 @@ nav {
 }
 
 /* defining sections */
-.container {
+main {
   display: flex;
   padding: 10px 2%;
   max-width: 1200px;
   margin: 0 auto;
+  padding-top: 70px;
 }
 
 .sidebar-nav {
@@ -316,18 +319,17 @@ ul li {
 .sidebar-nav ul li {
   display: block;
   margin: 5px 0;
+  padding: 5px;
+  color: var(--primary-accent);
+}
+
+.sidebar-nav ul li > span {
   font-size: 0.9em;
   padding: 5px;
   color: var(--primary-accent);
 }
 
-.sidebar-nav ul li > a {
-  font-size: 0.9em;
-  padding: 5px;
-  color: var(--primary-accent);
-}
-
-.sidebar-nav ul li > a:hover {
+.sidebar-nav ul li > span:hover {
   border-bottom: 2px solid var(--primary-dark);
   color: var(--primary-accent-dark);
   font-weight: bold;
@@ -344,6 +346,7 @@ ul li {
   background-color: var(--primary-accent);
   transition: right 0.2s;
   box-shadow: 0 2px 8px 4px rgb(0 0 0 / 30%);
+  z-index: 1000;
 }
 
 .cart-open {
