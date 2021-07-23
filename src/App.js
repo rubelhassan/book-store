@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 import BookShelf from "./components/BookShelf";
-import LeftPanel from "./components/LeftPanel";
+import BrowsePanel from "./components/BrowsePanel";
 import TopNav from "./components/TopNav";
 
 const App = () => {
@@ -8,7 +8,7 @@ const App = () => {
     <>
       <TopNav />
       <main>
-        <LeftPanel />
+        <BrowsePanel />
         <BookShelf />
       </main>
     </>
