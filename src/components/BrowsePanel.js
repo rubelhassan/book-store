@@ -1,10 +1,10 @@
-import BrowseCard from "./BrowseCard";
+import BrowseTopic from "./BrowseTopic";
 
 const BrowsePanel = () => {
   return (
     <section className="sidebar-nav">
-      <BrowseCard type="category" title="Categories" />
-      <BrowseCard type="author" title="Authors" />
+      <BrowseTopic type="category" name="Categories" />
+      <BrowseTopic type="author" name="Authors" />
     </section>
   );
 };

@@ -434,6 +434,9 @@ ul li {
   color: var(--primary);
   position: absolute;
   padding: 10px;
+}
+
+.close-cart i {
   cursor: pointer;
 }
 

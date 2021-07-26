@@ -1,9 +1,10 @@
-const BrowseCard = ({ title, type }) => {
+const BrowseTopic = ({ type, name }) => {
   return (
     <div className={`${type} card book-scroll`}>
-      <h5 className="card-header">{title}</h5>
+      <h5 className="card-header">{name}</h5>
       <span className="divider"></span>
       <ul>
+        {/* TODO: in-future load from props */}
         <li>
           <span>{type} one</span>
         </li>
@@ -18,4 +19,4 @@ const BrowseCard = ({ title, type }) => {
   );
 };
 
-export default BrowseCard;
+export default BrowseTopic;
