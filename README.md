@@ -228,7 +228,7 @@ Define parcel starting point.
 }
 ```
 
-If everything is ok, you'll able to run the app using `npm run app`. As we've used `jsx` in `index.html` to transform them to React component, so build will fail.
+If everything is ok, you'll able to run the app using `npm run app`. As we've used `jsx` in `index.html`, they need to be transformed to React component, so build will fail.
 
 Now remove all the scripts link from `index.html` and move all code from inside the last `script` tag to `App.js` file. `index.html` file should have only one script dependency like below.
 
@@ -250,3 +250,109 @@ import ReactDOM from "react-dom";
 ```
 
 Now run the command `npm run app` and you should see the app up and running without any error.
+
+Let's refactor vanilla components to JSX and organize folder structure. Move `Book` component to `component\Book.js`.
+
+```javascript
+import React from "react";
+
+function Book(props) {
+  return (
+    <div>
+      <h2>{props.title}</h2>
+      <h3>{props.author}</h3>
+      <b>${props.price}</b>
+      <p>{props.description}</p>
+    </div>
+  );
+}
+
+export default Book;
+```
+
+And move rest of the code from `index.html` to `App.js` on the root directory.
+
+```javascript
+import React from "react";
+import ReactDOM from "react-dom";
+import Book from "./components/Book";
+
+function App() {
+  return (
+    <div>
+      <h1>Welcome to Book Store</h1>
+      <Book
+        title="You Don't Know JS Yet: Get Started"
+        author="Kyle Simpson"
+        price="18.95"
+        description="Get Started prepares you for the journey ahead, first surveying the language then detailing how the rest of the You Don't Know JS Yet book series guides you to knowing JS more deeply."
+      />
+    </div>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));
+```
+
+You may have noticed that we need to import `React` on every file that contains JSX but we're not using it directly. And eslint is complaining about that. Let's fix it by installing following packages.
+
+```shell
+npm install -D eslint-plugin-import eslint-plugin-react eslint-plugin-jsx-a11y eslint-plugin-react-hooks
+```
+
+Change `eslintrc.json` like below.
+
+```json
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "semi": ["error", "always"],
+    "quotes": ["error", "double"],
+    "react/prop-types": 0,
+    "react/react-in-jsx-scope": 0
+  },
+  "plugins": ["react", "import", "jsx-a11y"],
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}
+```
+
+From React 17, [new JSX transform](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html) has been introduced. With the new transform, you can use JSX without importing React.
+
+Create a file `.babelrc` on the root directory with following content to tweak default preset for Babel as it's not set by Parcel yet.
+
+```json
+{
+  "presets": [
+    [
+      "@babel/preset-react",
+      {
+        "runtime": "automatic"
+      }
+    ]
+  ]
+}
+```
+
+Now remove React imports on top of any functional components and rerun the project. Everything should work fine as before.
