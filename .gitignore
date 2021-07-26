@@ -1,0 +1,17 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+.npm
+.eslintcache
+
+# production
+/build
+
+# msc
+.DS_Store
+.env*
+
+# vscode
+.vscode/*
+.history/
