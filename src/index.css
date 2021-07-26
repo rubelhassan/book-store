@@ -433,7 +433,8 @@ ul li {
 .close-cart {
   color: var(--primary);
   position: absolute;
-  padding: 5px;
+  padding: 10px;
+  cursor: pointer;
 }
 
 .cart-empty {
