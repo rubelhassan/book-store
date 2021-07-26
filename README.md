@@ -1,6 +1,6 @@
 # Building a Book Store with React (Step by Step Tutorial)
 
-# Run with Pure React
+## Write Your First React Componet with Zero Setup
 
 Let's crate a project directory `book-store`. Create `index.html` file under the `src/` directory. And add `style.css` too in the same directory.
 
@@ -54,4 +54,32 @@ ReactDOM.render(React.createElement(App), document.getElementById("root"));
 React.createElement(type, [props], [...children]);
 ```
 
-Now you should see "Welcome to Book Store" on you browser. Voila! the simplest React app you've just built.
+Now let's create a `Book` component as a child of `App` component.
+
+```javascript
+function Book(props) {
+  return React.createElement("div", {}, [
+    React.createElement("h2", {}, props.title),
+    React.createElement("h3", {}, props.author),
+    React.createElement("b", {}, "$" + props.price),
+    React.createElement("p", {}, props.description),
+  ]);
+}
+
+function App() {
+  return React.createElement("div", {}, [
+    React.createElement("h1", {}, "Welcome to Book Store"),
+    React.createElement(Book, {
+      title: "You Don't Know JS Yet: Get Started",
+      author: "Kyle Simpson",
+      price: 18.95,
+      description:
+        "Get Started prepares you for the journey ahead, first surveying the language then detailing how the rest of the You Don't Know JS Yet book series guides you to knowing JS more deeply.",
+    }),
+  ]);
+}
+```
+
+The `Book` component is reusable and flexible that takes `props` from parent to render itself.
+
+So far so good. You can create and render React components. Hooray!
