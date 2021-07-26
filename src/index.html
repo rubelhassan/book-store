@@ -19,14 +19,17 @@
       crossorigin
       src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
     ></script>
-    <script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script type="text/babel">
       function Book(props) {
-        return React.createElement("div", {}, [
-          React.createElement("h2", {}, props.title),
-          React.createElement("h3", {}, props.author),
-          React.createElement("b", {}, "$" + props.price),
-          React.createElement("p", {}, props.description),
-        ]);
+        return (
+          <div>
+            <h2>{props.title}</h2>
+            <h3>{props.author}</h3>
+            <b>${props.price}</b>
+            <p>{props.description}</p>
+          </div>
+        );
       }
 
       function App() {
