@@ -413,10 +413,10 @@ const App = () => {
 ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
-Add another component `LeftPanel` which will show available `categories` and `authors` to search for books.
+Add another component `BrowsePanel` which will show available `categories` and `authors` to browse for books.
 
 ```javascript
-const LeftPanel = () => {
+const BrowsePanel = () => {
   return (
     <section className="sidebar-nav">
       <div className="category card book-scroll">
@@ -453,14 +453,14 @@ const LeftPanel = () => {
   );
 };
 
-export default LeftPanel;
+export default BrowsePanel;
 ```
 
-Inside of `main` element in `App.js` add `LeftPanel` component.
+Inside of `main` element in `App.js` add `BrowsePanel` component.
 
 ```javascript
 <main>
-  <LeftPanel />
+  <BrowsePanel />
 </main>
 ```
 
@@ -535,12 +535,12 @@ const BookShelf = () => {
 export default BookShelf;
 ```
 
-At this point, you `App.js` file should look like below.
+At this point, your `App.js` file should look like below.
 
 ```javascript
 import ReactDOM from "react-dom";
 import BookShelf from "./components/BookShelf";
-import LeftPanel from "./components/LeftPanel";
+import BrowsePanel from "./components/BrowsePanel";
 import TopNav from "./components/TopNav";
 
 const App = () => {
@@ -548,7 +548,7 @@ const App = () => {
     <>
       <TopNav />
       <main>
-        <LeftPanel />
+        <BrowsePanel />
         <BookShelf />
       </main>
     </>
