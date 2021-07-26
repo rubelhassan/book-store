@@ -413,7 +413,7 @@ const App = () => {
 ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
-Add another component `BrowsePanel` which will show available `categories` and `authors` to browse for books.
+You should see the update on UI. Lets add another component `BrowsePanel` which will show available `categories` and `authors` to browse for books.
 
 ```javascript
 const BrowsePanel = () => {
@@ -557,3 +557,179 @@ const App = () => {
 
 ReactDOM.render(<App />, document.getElementById("root"));
 ```
+
+We have added several components in our app so far and we can see static components (top navigation, browsing panel and list of books).
+
+At the time of writing `BrowsePanel` component you may notice that we used identical html except few places where they vary to render Categories and Authors. Let's extract these duplicate code in a reusable component and make a room for adding new topics in future in this component.
+
+So let's write a component named `BrowseTopic` and compose it in `BrowseTopic`.
+
+```javascript
+const BrowseTopic = ({ type, name }) => {
+  return (
+    <div className={`${type} card book-scroll`}>
+      <h5 className="card-header">{name}</h5>
+      <span className="divider"></span>
+      <ul>
+        {/* TODO: in-future load from props */}
+        <li>
+          <span>{type} one</span>
+        </li>
+        <li>
+          <span>{type} two</span>
+        </li>
+        <li>
+          <span>{type} three</span>
+        </li>
+      </ul>
+    </div>
+  );
+};
+
+export default BrowseTopic;
+```
+
+`BrowsePanel` should look like below:
+
+```javascript
+import BrowseTopic from "./BrowseTopic";
+
+const BrowsePanel = () => {
+  return (
+    <section className="sidebar-nav">
+      <BrowseTopic type="category" name="Categories" />
+      <BrowseTopic type="author" name="Authors" />
+    </section>
+  );
+};
+
+export default BrowsePanel;
+```
+
+Notice that we passed `type` and `name` of BrowseTopic as `props` that varies in between them. React component accepts `props` as input, you can compare them like arguments in JavaScript function.
+
+> React `props` are read-only. All React components must act like pure functions with respect to their props.
+
+In our app a user can see the books that has been addet to cart and modify the cart as needed. So, let's create another two component name `Cart` to hold `CartItem`. We will will be modifying these components in future to make more modular.
+
+`CartItem.js` is like below:
+
+```javascript
+const CartItem = () => {
+  return (
+    <div className="cart-item">
+      <div className="cart-item-remove">
+        <i className="fa fa-trash"></i>
+      </div>
+      <div className="cart-item-image">
+        <img
+          src={require("url:../static/books/1.jpg")}
+          alt="You Don't Know JS Yet: Get Started"
+        />
+      </div>
+      <div className="cart-item-info">
+        <p className="cart-item-title">
+          {"You Don't Know JS Yet: Get Started"}
+        </p>
+        <p className="cart-item-author">
+          <small>Yann Martel</small>
+        </p>
+        <p className="cart-item-quantity">
+          <span>
+            Quantity x <b>1</b>
+          </span>
+        </p>
+      </div>
+      <div className="cart-item-price">
+        <div className="cart-item-change">
+          <button className="btn-cart-item-change">-</button>
+          <button className="btn-cart-item-change">+</button>
+        </div>
+        <span className="cart-item-price-total">
+          <small>৳</small>199
+        </span>
+      </div>
+    </div>
+  );
+};
+
+export default CartItem;
+```
+
+`Cart.js` is like below:
+
+```javascript
+import CartItem from "./CartItem";
+
+const Cart = ({ isOpen }) => {
+  return (
+    <section className={isOpen ? "cart cart-open" : "cart"}>
+      {!isOpen && (
+        <div className="cart-trolley cart-closed">
+          <span className="cart-trolley-quantity">0</span>
+        </div>
+      )}
+
+      <div className="cart-content">
+        <div className="close-cart">
+          <i className="fa fa-close fa-lg"></i>
+        </div>
+        <div className="cart-header">
+          <h5 className="header-title">Cart</h5>
+          <span>(10 items)</span>
+          <p className="divider"></p>
+        </div>
+
+        <div className="cart-items">
+          {/* <p className="cart-empty">
+              Add some products in the cart <br />
+              :)
+            </p> */}
+          <CartItem />
+        </div>
+
+        <div className="cart-footer">
+          <div className="total">
+            <p>TOTAL</p>
+          </div>
+          <div className="total-price">
+            <p className="total-price-val">
+              <small>৳</small>10.00
+            </p>
+          </div>
+          <div className="btn-buy reverse-accent">Checkout</div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Cart;
+```
+
+We have `isOpen` props to pass in `Cart` which will indicate if the cart is opened or not. Let's integrate this component in `App.js`.
+
+```javascript
+import ReactDOM from "react-dom";
+import BookShelf from "./components/BookShelf";
+import BrowsePanel from "./components/BrowsePanel";
+import Cart from "./components/Cart";
+import TopNav from "./components/TopNav";
+
+const App = () => {
+  return (
+    <>
+      <TopNav />
+      <main>
+        <BrowsePanel />
+        <BookShelf />
+        <Cart isOpen={false} />
+      </main>
+    </>
+  );
+};
+
+ReactDOM.render(<App />, document.getElementById("root"));
+```
+
+Now you should see a trolley icon on right-bottom corner on the UI. So far, we've added all components as static and without interactions.
