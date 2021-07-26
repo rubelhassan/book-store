@@ -1,18 +1,18 @@
 import ReactDOM from "react-dom";
-import Book from "./components/Book";
+import BookShelf from "./components/BookShelf";
+import LeftPanel from "./components/LeftPanel";
+import TopNav from "./components/TopNav";
 
-function App() {
+const App = () => {
   return (
-    <div>
-      <h1>Welcome to Book Store</h1>
-      <Book
-        title="You Don't Know JS Yet: Get Started"
-        author="Kyle Simpson"
-        price="18.95"
-        description="Get Started prepares you for the journey ahead, first surveying the language then detailing how the rest of the You Don't Know JS Yet book series guides you to knowing JS more deeply."
-      />
-    </div>
+    <>
+      <TopNav />
+      <main>
+        <LeftPanel />
+        <BookShelf />
+      </main>
+    </>
   );
-}
+};
 
 ReactDOM.render(<App />, document.getElementById("root"));

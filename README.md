@@ -210,7 +210,7 @@ Add the following at the end of `"scripts"` at `package.json`.
 
 Now you can run `npm run lint` to check any linting errors, we'll see errors as currently we don't have any js/jsx file in our project. You can also run `npm run lint -- --fix` to fix if there are any errors.
 
-### Webpack
+### Webpack/Parcel
 
 Webpack is a static module bundler for modern JavaScript applications. But for easy to setup we'll be using Parcel until the end of development.
 
@@ -340,7 +340,9 @@ Change `eslintrc.json` like below.
 
 From React 17, [new JSX transform](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html) has been introduced. With the new transform, you can use JSX without importing React.
 
-Create a file `.babelrc` on the root directory with following content to tweak default preset for Babel as it's not set by Parcel yet.
+### Babel
+
+Create a file `.babelrc` on the root directory with following content to tweak default preset for Babel as it's not set by Parcel(at the time of writing) yet.
 
 ```json
 {
@@ -356,3 +358,202 @@ Create a file `.babelrc` on the root directory with following content to tweak d
 ```
 
 Now remove React imports on top of any functional components and rerun the project. Everything should work fine as before.
+
+We've done setting up everything so far. At this stage we will focus on writing static components. To make the components look better we'll need styles. For simplicity we're using pure css in a monolithic file, you can copy them from `src/index.css` from this repo. Also, copy all the contents `src/static` path to your project.
+
+## Components
+
+React is component-based JavasSript library. Component is an independent and reusable pieces of code, more like JavaScript function. Components manage their own states and multiple components can be composed to a single compound component to make complex UIs.
+
+There are two types of components - class components and functional components. As functional components has become almost of a standard, we'll will be using functional components mostly in this project.
+
+> We're going to write our code in ES6
+
+In this section we'll be writing static components, later we will add behavior to these components. Let's create a folder `src/components` where we will keep all components. Let's write a component `TopNav` that will render top navigation panel of our book store app.
+
+```javascript
+const TopNav = () => {
+  return (
+    <nav>
+      <div className="logo">
+        <b>Book Store</b>
+      </div>
+      <div className="search-container">
+        <input
+          id="search"
+          type="text"
+          placeholder="Search by book name, author"
+        />
+        <button type="submit" className="btn-search">
+          <i className="fa fa-search"></i>
+        </button>
+      </div>
+    </nav>
+  );
+};
+
+export default TopNav;
+```
+
+Now import this component in `App` component. `App.js` should look like below.
+
+```javascript
+import ReactDOM from "react-dom";
+import TopNav from "./components/TopNav";
+
+const App = () => {
+  return (
+    <>
+      <TopNav />
+      <main></main>
+    </>
+  );
+};
+
+ReactDOM.render(<App />, document.getElementById("root"));
+```
+
+Add another component `LeftPanel` which will show available `categories` and `authors` to search for books.
+
+```javascript
+const LeftPanel = () => {
+  return (
+    <section className="sidebar-nav">
+      <div className="category card book-scroll">
+        <h5 className="card-header">Categories</h5>
+        <span className="divider"></span>
+        <ul>
+          <li>
+            <span>Novel</span>
+          </li>
+          <li>
+            <span>Programming</span>
+          </li>
+          <li>
+            <span>Nonfiction</span>
+          </li>
+        </ul>
+      </div>
+      <div className="author card book-scroll">
+        <h5 className="card-header">Author</h5>
+        <span className="divider"></span>
+        <ul>
+          <li>
+            <span>Rabindranath Tagor</span>
+          </li>
+          <li>
+            <span>Kyle Simpson</span>
+          </li>
+          <li>
+            <span>Humayun Ahmed</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  );
+};
+
+export default LeftPanel;
+```
+
+Inside of `main` element in `App.js` add `LeftPanel` component.
+
+```javascript
+<main>
+  <LeftPanel />
+</main>
+```
+
+We just need another component to show list of books that are available to sell. Before creating that let's refactor the `Book` component like below.
+
+```javascript
+const Book = () => {
+  return (
+    <div className="book-card card">
+      <div className="book-info">
+        <div className="book-tag-discount">
+          <b>5%</b> Discount
+        </div>
+        <div className="book-card-image">
+          <img
+            src={require("url:../static/books/1.jpg")}
+            alt="You Don't Know JS Yet: Get Started"
+          />
+        </div>
+        <p className="book-title">{"You Don't Know JS Yet: Get Started"}</p>
+        <span className="book-author">Kyle Simpson</span>
+        <div>
+          <div className="book-card-price">
+            <span className="price-original">
+              <small>৳</small>220
+            </span>
+            <span className="price-discount">
+              <small>৳</small>199
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="btn-buy">Add to cart</div>
+    </div>
+  );
+};
+
+export default Book;
+```
+
+Now add `BookShelf` components to hold all the `Book` components.
+
+```javascript
+import Book from "./Book.js";
+
+const BookShelf = () => {
+  return (
+    <div className="books-container">
+      <section className="books-header-section">
+        <div className="books-count">
+          <span>5 book(s) found.</span>
+        </div>
+        <div className="books-sort">
+          <span>Order by: </span>
+          <select className="card-select">
+            <option>Select</option>
+            <option value="price">Price: lowest to highest</option>
+            <option value="date">Publish: latest to oldest</option>
+          </select>
+        </div>
+      </section>
+      <section className="books-card-section">
+        <Book />
+        <Book />
+        <Book />
+        <Book />
+      </section>
+    </div>
+  );
+};
+
+export default BookShelf;
+```
+
+At this point, you `App.js` file should look like below.
+
+```javascript
+import ReactDOM from "react-dom";
+import BookShelf from "./components/BookShelf";
+import LeftPanel from "./components/LeftPanel";
+import TopNav from "./components/TopNav";
+
+const App = () => {
+  return (
+    <>
+      <TopNav />
+      <main>
+        <LeftPanel />
+        <BookShelf />
+      </main>
+    </>
+  );
+};
+
+ReactDOM.render(<App />, document.getElementById("root"));
+```
