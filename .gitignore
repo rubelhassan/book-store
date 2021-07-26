@@ -4,6 +4,8 @@
 .pnp.js
 .npm
 .eslintcache
+dist/
+.parcel-cache/
 
 # production
 /build
