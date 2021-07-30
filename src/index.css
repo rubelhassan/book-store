@@ -360,10 +360,20 @@ ul li {
   display: inline-block;
   vertical-align: middle;
   margin-right: 15px;
+}
+
+.cart-trolley button {
+  width: 100%;
+  height: 100%;
   background-repeat: no-repeat;
   background-size: contain;
-  background-position: 50%;
+  border: none;
+  background-color: transparent;
   background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CgogPHRpdGxlLz4KIDxnPgogIDx0aXRsZT5iYWNrZ3JvdW5kPC90aXRsZT4KICA8cmVjdCBmaWxsPSJub25lIiBpZD0iY2FudmFzX2JhY2tncm91bmQiIGhlaWdodD0iNDAyIiB3aWR0aD0iNTgyIiB5PSItMSIgeD0iLTEiLz4KIDwvZz4KIDxnPgogIDx0aXRsZSBmaWxsPSIjMTAxODIwIj5MYXllciAxPC90aXRsZT4KICA8cGF0aCBmaWxsPSIjMTAxODIwIiBpZD0ic3ZnXzEiIGQ9Im0xMCwyMGExLDEgMCAwIDEgLTEsLTAuOGwtMi4zNCwtMTEuNzlhMywzIDAgMCAwIC0yLjk0LC0yLjQxbC0xLjcyLDBhMSwxIDAgMCAxIDAsLTJsMS43MiwwYTUsNSAwIDAgMSA0LjksNGwyLjM4LDExLjhhMSwxIDAgMCAxIC0wLjgsMS4ybC0wLjIsMHoiIGNsYXNzPSJjbHMtMSIvPgogIDxwYXRoIGZpbGw9IiMxMDE4MjAiIGlkPSJzdmdfMiIgZD0ibTExLDI3bC0xLjg2LDBhNC4xNCw0LjE0IDAgMCAxIC0wLjM4LC04LjI2bDE4LjQxLC0xLjY3bDEuNjEsLTguMDdsLTIwLjc4LDBhMSwxIDAgMCAxIDAsLTJsMjIsMGExLDEgMCAwIDEgMC43NywwLjM3YTEsMSAwIDAgMSAwLjIzLDAuODNsLTIsMTBhMSwxIDAgMCAxIC0wLjg5LDAuOGwtMTkuMTcsMS43NGEyLjEzLDIuMTMgMCAwIDAgMC4yLDQuMjZsMS44NiwwYTEsMSAwIDAgMSAwLDJ6IiBjbGFzcz0iY2xzLTEiLz4KICA8cGF0aCBmaWxsPSIjMTAxODIwIiBpZD0ic3ZnXzMiIGQ9Im0yNiwzMGE0LDQgMCAxIDEgNCwtNGE0LDQgMCAwIDEgLTQsNHptMCwtNmEyLDIgMCAxIDAgMiwyYTIsMiAwIDAgMCAtMiwtMnoiIGNsYXNzPSJjbHMtMSIvPgogIDxwYXRoIGZpbGw9IiMxMDE4MjAiIGlkPSJzdmdfNCIgZD0ibTE0LDMwYTQsNCAwIDEgMSA0LC00YTQsNCAwIDAgMSAtNCw0em0wLC02YTIsMiAwIDEgMCAyLDJhMiwyIDAgMCAwIC0yLC0yeiIgY2xhc3M9ImNscy0xIi8+CiAgPHBhdGggZmlsbD0iIzEwMTgyMCIgaWQ9InN2Z181IiBkPSJtMjMsMjdsLTYsMGExLDEgMCAwIDEgMCwtMmw2LDBhMSwxIDAgMCAxIDAsMnoiIGNsYXNzPSJjbHMtMSIvPgogPC9nPgo8L3N2Zz4=);
+}
+
+.cart-trolley button:hover {
+  transform: scale(1.1);
 }
 
 .cart-trolley-quantity {
@@ -376,7 +386,7 @@ ul li {
   font-weight: 600;
   font-size: 0.8em;
   text-align: center;
-  line-height: 28px;
+  line-height: 25px;
   border-radius: 50%;
   background-color: var(--primary);
 }
@@ -386,10 +396,6 @@ ul li {
   cursor: pointer;
   right: 50px;
   bottom: 60px;
-}
-
-.cart-trolley:hover {
-  transform: scale(1.1);
 }
 
 .cart-content,
@@ -436,8 +442,16 @@ ul li {
   padding: 10px;
 }
 
-.close-cart i {
+.close-cart button {
+  background-color: transparent;
+  border: none;
+  color: var(--primary);
+  font-size: 1.2em;
   cursor: pointer;
+}
+
+.close-cart button:hover {
+  transform: scale(1.1);
 }
 
 .cart-empty {

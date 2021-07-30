@@ -19,7 +19,7 @@ const Book = () => {
               <small>৳</small>220
             </span>
             <span className="price-discount">
-              <small>৳</small>199
+              <small> ৳</small>199
             </span>
           </div>
         </div>
