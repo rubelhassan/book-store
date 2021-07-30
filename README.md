@@ -787,21 +787,136 @@ const toggleCart = () => {
 Now we just need to call this function when user clicks on the button. React provides a [`onClick`](https://reactjs.org/docs/handling-events.html) event which is similar to DOM event `onclick`.
 
 ```javascript
-  return (
+return (
     <section className={cartOpen ? "cart cart-open" : "cart"}>
-{!cartOpen && (
-<div className="cart-trolley cart-closed">
-    <button onClick={() => toggleCart()}>
-    <span className="cart-trolley-quantity">0</span>
-    </button>
-</div>
-)}
+    {!cartOpen && (
+    <div className="cart-trolley cart-closed">
+        <button onClick={() => toggleCart()}>
+        <span className="cart-trolley-quantity">0</span>
+        </button>
+    </div>
+    )}
 
-<div className="cart-content">
-<div className="close-cart">
-    <button onClick={() => toggleCart()}>
-    <i className="fa fa-close fa-lg"></i>
-    </button>
-</div>
+    <div className="cart-content">
+    <div className="close-cart">
+        <button onClick={() => toggleCart()}>
+        <i className="fa fa-close fa-lg"></i>
+        </button>
+    </div>
 ...
+);
+```
+
+Here we've added onClick event on cart close and cart open button where `toggleCart` will be called and the state will be change and React will re-render the `Cart` component with the change.
+
+## Mock API
+
+As we're developing a front-end application, we'll be mostly depending on back-end part of the application for exchanging data and business operation. We don't have any back-end service to work with right now. Sometimes, in-real development we will not have the back-end implementation beforehand, the back-end development may good hand in hand. What happens in this case backend and front-end teams agree upon on an API contract so that teams can work independently. Backend team will be involved developing real API that matches the initial contract. On the other hand, front-end team will start working on depending on the contract (mock API) and will replace with real-one when development finished.
+
+Now we're going to prepare a mock API of our backend API using [MirageJS - API Mocking Library](https://miragejs.com/). Run `npm i -D miragejs` to install MirageJS as dev dependency.
+
+Let's create directory `src/server/data` and copy `src/server/data/book.json` from this repository. Now, create a file `server/Server.js`. We initially introduce few endpoints to retrieve and search books in this mock api server, later we'll be adding more endpoints for different capabilities.
+
+```javascript
+import { createServer } from "miragejs";
+import books from "./data/books.json";
+
+export default function mockServer() {
+  createServer({
+    routes() {
+      this.get("/api/books", () => {
+        return {
+          data: {
+            total: books.length,
+            books: books,
+          },
+        };
+      });
+
+      this.get("/api/books/:id", (schema, request) => {
+        return {
+          book: books[request.params.id],
+        };
+      });
+
+      this.post("/api/books/search", (schema, request) => {
+        const params = JSON.parse(request.requestBody);
+        let matchedBooks = [];
+        for (const book of books) {
+          if (
+            params.name &&
+            book.name.toLowerCase().includes(params.name.toLowerCase())
+          ) {
+            matchedBooks.push(book);
+            continue;
+          }
+
+          if (
+            params.author &&
+            book.author.toLowerCase().includes(params.author.toLowerCase())
+          ) {
+            matchedBooks.push(book);
+            continue;
+          }
+        }
+
+        return {
+          data: {
+            total: matchedBooks.length,
+            books: matchedBooks,
+          },
+        };
+      });
+    },
+  });
+}
+```
+
+Now initialize the mock server in `App.js` like this.
+
+```javascript
+import mockServer from "./server/Server";
+
+if (process.env.NODE_ENV === "development") {
+  mockServer();
+}
+```
+
+Before start testing if our mock server works let's create another file in `src/services` directory named `BookService.js`. This is where we'll be writing functions to retrieve data from different endpoints of mock api that are related to books only. The method `findBooks` can retrieve books from api using book name or author name.
+
+```javascript
+export class BookService {
+  async findBooks(name, author) {
+    const res = await fetch("api/books/search", {
+      method: "POST",
+      body: JSON.stringify({
+        name: name,
+        author: author,
+      }),
+    });
+    return await res.json();
+  }
+}
+```
+
+And another file named `AppService.js` under the same directory.
+
+```javascript
+import { BookService } from "./BookService";
+
+export const bookService = new BookService();
+```
+
+We have created the `AppServer` to initialize single instance of every service, so that we don't need to create objects of the services all the time when we use them.
+
+Now we have everything to test the mock api server. Let's add the following in `App.js` file after calling `mockServer()` and refresh the app you should see api response in the browser console.
+
+```javascript
+const searchBooks = (bookName) => {
+  let result = bookService.findBooks(bookName);
+  console.log("result", JSON.stringify(result));
+  return result;
+};
+
+searchBooks("js");
 ```

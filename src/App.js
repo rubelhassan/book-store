@@ -4,6 +4,12 @@ import BrowsePanel from "./components/BrowsePanel";
 import Cart from "./components/Cart";
 import TopNav from "./components/TopNav";
 
+import mockServer from "./server/Server";
+
+if (process.env.NODE_ENV === "development") {
+  mockServer();
+}
+
 const App = () => {
   return (
     <>
