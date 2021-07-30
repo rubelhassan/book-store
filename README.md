@@ -361,7 +361,7 @@ Now remove React imports on top of any functional components and rerun the proje
 
 We've done setting up everything so far. At this stage we will focus on writing static components. To make the components look better we'll need styles. For simplicity we're using pure css in a monolithic file, you can copy them from `src/index.css` from this repo. Also, copy all the contents `src/static` path to your project.
 
-## Components
+## Components and Props
 
 React is component-based JavasSript library. Component is an independent and reusable pieces of code, more like JavaScript function. Components manage their own states and multiple components can be composed to a single compound component to make complex UIs.
 
@@ -661,18 +661,23 @@ export default CartItem;
 ```javascript
 import CartItem from "./CartItem";
 
-const Cart = ({ isOpen }) => {
+const Cart = () => {
+  const cartOpen = false;
   return (
-    <section className={isOpen ? "cart cart-open" : "cart"}>
-      {!isOpen && (
+    <section className={cartOpen ? "cart cart-open" : "cart"}>
+      {!cartOpen && (
         <div className="cart-trolley cart-closed">
-          <span className="cart-trolley-quantity">0</span>
+          <button>
+            <span className="cart-trolley-quantity">0</span>
+          </button>
         </div>
       )}
 
       <div className="cart-content">
         <div className="close-cart">
-          <i className="fa fa-close fa-lg"></i>
+          <button>
+            <i className="fa fa-close fa-lg"></i>
+          </button>
         </div>
         <div className="cart-header">
           <h5 className="header-title">Cart</h5>
@@ -723,7 +728,7 @@ const App = () => {
       <main>
         <BrowsePanel />
         <BookShelf />
-        <Cart isOpen={false} />
+        <Cart />
       </main>
     </>
   );
@@ -732,4 +737,71 @@ const App = () => {
 ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
-Now you should see a trolley icon on right-bottom corner on the UI. So far, we've added all components as static and without interactions.
+Now you should see a trolley icon on right-bottom corner on the UI.
+
+## States and Events
+
+So far, we've added all components as static, stateless, and interactions-less.
+
+If see at the bottom-right corner of our app UI, you will see a button with trolley icon. We want to expand the cart menu upon click on this button. To achieve this we want to persist the state whether the cart is open or not.
+
+Inside a functional component to track state React provides a `useState` hook which a simple JavaScript function that takes initial state of a variable and return an array - the first element is the initial value and the second element is a setter function. The setter function accepts new value as argument and allow to change the initial state. React tracks the value and the order of `useState` declaration inside a functional component. When you chanage the value inside a component with the setter function provided by `useState` hook, React just simply re-render the component with the new states.
+
+Let's see `useState` in practice. Inside `Cart` component import `useState` hook with this line.
+
+```javascript
+import { useState } from "react";
+```
+
+Now replace the line `const cartOpen = false;` from `Cart` component with the line below.
+
+```javascript
+const [cartOpen, setCartOpen] = useState(false);
+```
+
+Here, we're defining a state with initial value `false` which is being return with as setter method, we just deconstructed the array elements in two variable named `carOpen` hold the value `false` and `setCartOpen` that let you change the state value. You can name them anything. So what we've done here is set the initial value of cart opening state as `false` that indicates that our cart is closed currently. And when the value is changed to `true` that will indicate that the cart is in open state. In the very begining of JSX, change like below
+
+```javascript
+<section className={cartOpen ? "cart cart-open" : "cart"}>
+    {!cartOpen && (
+    <div className="cart-trolley cart-closed">
+        <button>
+            <span className="cart-trolley-quantity">0</span>
+        </button>
+    </div>
+    )}
+```
+
+Here we're checking if the current state of `cartOpen` is false then rendering the trolley icon with cart items quantity. Notice we've put the JSX inside a curley braces the block after `&&` will be evaluated only if the value of `cartOpen` is false.
+
+> To learn further on `useState` hook [see here](https://reactjs.org/docs/hooks-state.html)
+
+Now we can store state of a component. Let's see how we can state to make the cart open button interactive. Let's write a function to toggle the cart opening state when clicked on the cart icon.
+
+```javascript
+const toggleCart = () => {
+  setCartOpen(!cartOpen);
+};
+```
+
+Now we just need to call this function when user clicks on the button. React provides a [`onClick`](https://reactjs.org/docs/handling-events.html) event which is similar to DOM event `onclick`.
+
+```javascript
+  return (
+    <section className={cartOpen ? "cart cart-open" : "cart"}>
+{!cartOpen && (
+<div className="cart-trolley cart-closed">
+    <button onClick={() => toggleCart()}>
+    <span className="cart-trolley-quantity">0</span>
+    </button>
+</div>
+)}
+
+<div className="cart-content">
+<div className="close-cart">
+    <button onClick={() => toggleCart()}>
+    <i className="fa fa-close fa-lg"></i>
+    </button>
+</div>
+...
+```

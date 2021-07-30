@@ -1,18 +1,28 @@
 import CartItem from "./CartItem";
+import { useState } from "react";
 
-const Cart = (props) => {
-  const isOpen = props.isOpen;
+const Cart = () => {
+  const [cartOpen, setCartOpen] = useState(false);
+
+  const toggleCart = () => {
+    setCartOpen(!cartOpen);
+  };
+
   return (
-    <section className={isOpen ? "cart cart-open" : "cart"}>
-      {!isOpen && (
+    <section className={cartOpen ? "cart cart-open" : "cart"}>
+      {!cartOpen && (
         <div className="cart-trolley cart-closed">
-          <span className="cart-trolley-quantity">0</span>
+          <button onClick={() => toggleCart()}>
+            <span className="cart-trolley-quantity">0</span>
+          </button>
         </div>
       )}
 
       <div className="cart-content">
         <div className="close-cart">
-          <i className="fa fa-close fa-lg"></i>
+          <button onClick={() => toggleCart()}>
+            <i className="fa fa-close fa-lg"></i>
+          </button>
         </div>
         <div className="cart-header">
           <h5 className="header-title">Cart</h5>

@@ -11,7 +11,7 @@ const App = () => {
       <main>
         <BrowsePanel />
         <BookShelf />
-        <Cart isOpen={false} />
+        <Cart />
       </main>
     </>
   );
